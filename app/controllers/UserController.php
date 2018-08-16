@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\Response as Resp;
 use Models\User;
 use Core\Controller;
-use Core\View;
+
 
 
 class UserController extends Controller
