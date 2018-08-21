@@ -1,7 +1,6 @@
 <?php
-session_start();
 
-if(isset($_SESSION["session_username"])){
+if(isset($_SESSION["id"])){
     header("Location: intropage.php");
 }
 

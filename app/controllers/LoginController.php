@@ -11,6 +11,7 @@ namespace Controllers;
 use Psr\Http\Message\ServerRequestInterface;
 use Core\Controller;
 use Models\User;
+use Zend\Diactoros\Response\HtmlResponse;
 
 
 class LoginController extends Controller
@@ -18,10 +19,13 @@ class LoginController extends Controller
     public function getLogin(ServerRequestInterface $request)
     {
         session_start();
-        if (isset($_SESSION["session_username"])) {
-            header("location:intropage");
+        if (isset($_SESSION["id"])) {
+            $data = User::where('id', $_SESSION["id"])->get()[0]->username;
+            $html  = $this->render('intropage.php', 'template_view.php', $data);
+            return new HtmlResponse($html);
         } else {
-            $this->view->generate('login.php', 'template_view.php');
+            $html  = $this->render('login.php', 'template_view.php');
+            return new HtmlResponse($html);
         }
     }
 
@@ -29,15 +33,14 @@ class LoginController extends Controller
     {
         if (isset($_POST["login"])) {
             if (!empty($_POST['username']) && !empty($_POST['password'])) {
-                $username = $_POST['username'];
-                $password = $_POST['password'];
-                $user = User::where('username', $username)->get();
-                $pass = User::where('password', $password)->get();
-                if (count($user) && count($pass)) {
+                $user = User::where('username', $_POST['username'])->get();
+                $pass = User::where('password', $_POST['password'])->get();
+                if (count($user) != 0 && count($pass) != 0) {
                     session_start();
-                    $_SESSION['session_username'] = $username;
-                    $data = $_SESSION['session_username'];
-                    $this->view->generate('intropage.php', 'template_view.php', $data);
+                    $data = $_POST["username"];
+                    $_SESSION['id'] = User::where('username', $_POST['username'])->get()[0]->id;
+                    $html  = $this->render('intropage.php', 'template_view.php', $data);
+                    return new HtmlResponse($html);
                 } else {
                     echo 'Invalid username or password!';
                 }
@@ -48,7 +51,8 @@ class LoginController extends Controller
 
     public function getRegister(ServerRequestInterface $request)
     {
-        $this->view->generate('register.php', 'template_view.php');
+        $html = $this->render('register.php', 'template_view.php');
+        return new HtmlResponse($html);
     }
 
     public function postRegister(ServerRequestInterface $request)
@@ -56,13 +60,11 @@ class LoginController extends Controller
 
         if (isset($_POST["register"])) {
             if (!empty($_POST['email']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-                $email = $_POST['email'];
-                $username = $_POST['username'];
                 $password = $_POST['password'];
-                if (count(User::where('username', $username)->get()) == 0 && count(User::where('email', $email)->get()) == 0){
-                    $data = $username;
-                    $user = User::create(['username' => $username, 'email' => $email, 'password' => $password]);
-                    $this->view->generate('intropage.php', 'template_view.php', $data);
+                if (count(User::where('username', $_POST['username'])->get()) == 0 && count(User::where('email', $_POST['email'])->get()) == 0){
+                    User::create(['username' => $_POST['username'], 'email' => $_POST['email'], 'password' => $_POST['password']]);
+                    $html  = $this->render('login.php', 'template_view.php');
+                    return new HtmlResponse($html);
                 } else {
                     echo 'Your name or email already exist';
                 }
@@ -74,19 +76,21 @@ class LoginController extends Controller
     {
 
         session_start();
-        if (!isset($_SESSION["session_username"])) {
+        if (!isset($_SESSION["is"])) {
             header("location:login");
         } else {
-            $data = $_SESSION["session_username"];
-            $this->view->generate('intropage.php', 'template_view.php', $data);
+            $data = User::where('id', $_SESSION["id"])->get()[0]->username;
+            $html  = $this->render('intropage.php', 'template_view.php', $data);
+            return new HtmlResponse($html);
         }
     }
 
     public function logout(ServerRequestInterface $request)
     {
         session_start();
-        unset($_SESSION['session_username']);
+        unset($_SESSION['id']);
         session_destroy();
         header("location:login");
     }
+
 }
