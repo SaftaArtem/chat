@@ -50,13 +50,12 @@ class HomeController extends Controller
 
 
     public function home(ServerRequestInterface $request) {
-
-        $html  = $this->render('home.php', 'template_view.php');
-
-//        ob_start();
-//        $this->view->generate('home.php', 'template_view.php');
-//        $html = ob_get_clean();
-
+        $users = User::all();
+        $data = [];
+        foreach($users as $user) {
+            $data[] = $user->username;
+        }
+        $html  = $this->render('home.php', 'template_view.php', $data);
         return new HtmlResponse($html);
     }
 }

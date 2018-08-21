@@ -8,11 +8,10 @@
 
 use Models\Chat;
 
-if(isset($_POST["message"]) && isset($_POST["name"])) {
-    echo $_POST["message"].' ';
-    echo $_POST["name"];
-//    Chat::create(['username' => $_POST["name"], 'message' => $_POST["message"]]);
-    Chat::create(['name' => $_POST["name"], 'message' => $_POST["message"]]);
+if(isset($_POST["message"])) {
+    session_start();
+    Chat::create(['user_id' => $_SESSION['id'], 'message' => $_POST["message"]]);
 }
 
 ?>
+

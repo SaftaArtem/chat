@@ -8,7 +8,7 @@ class Chat extends Model
 {
 
     protected $table = 'chat';
-    protected $fillable = ['name', 'message'];
+    protected $fillable = ['user_id', 'message'];
 
 }
 

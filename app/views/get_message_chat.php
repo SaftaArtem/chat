@@ -6,13 +6,15 @@
  * Time: 17:54
  */
 use Models\Chat;
+use Models\User;
 
 
 $messages = Chat::all();
 $all = array();
 foreach ($messages as $mess) {
+    $name = User::where('id', $mess->user_id)->get()[0]->username;
     $itm = array(
-        $mess->name => $mess->message
+        $name => $mess->message
     );
     $all[] = $itm;
 }
