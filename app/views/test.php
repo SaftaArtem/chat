@@ -1,5 +1,10 @@
 <?php
-foreach ($data[0] as $key => $value) {
-    echo $key . '-->' . $value . '<br>';
-}
-?>
+/**
+ * Created by PhpStorm.
+ * User: artem
+ * Date: 22.08.18
+ * Time: 11:25
+ */
+var_dump($data);
+
+

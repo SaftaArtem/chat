@@ -35,25 +35,24 @@ class HomeController extends Controller
 
     public function handler(ServerRequestInterface $request)
     {
-        ob_start();
-        $this->view->handler('handler.php');
-        $res = ob_get_clean();
-        return new TextResponse($res);
-    }
-    public function all(ServerRequestInterface $request)
-    {
-        ob_start();
-        $this->view->handler('get_message_chat.php');
-        $res = ob_get_clean();
+        $res = $this->render_handlers('handler.php');
         return new TextResponse($res);
     }
 
+    public function all_message(ServerRequestInterface $request)
+    {
+        $res = $this->render_handlers('get_message_chat.php');
+        return new TextResponse($res);
+    }
 
     public function home(ServerRequestInterface $request) {
         $users = User::all();
         $data = [];
         foreach($users as $user) {
-            $data[] = $user->username;
+            $user_data = array();
+            $user_data['name'] = $user->username;
+            $user_data['id'] = $user->id;
+            $data[] = $user_data;
         }
         $html  = $this->render('home.php', 'template_view.php', $data);
         return new HtmlResponse($html);

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#btn').on('click', myAJAX);
+    $('#btn').on('click', sandMessage);
     $('#main_btn').on('click', function () {
         if ($( '#sidebar' ).hasClass( "hide" )) {
             $('#sidebar').removeClass('hide');
@@ -7,33 +7,32 @@ $(document).ready(function(){
             $('#sidebar').addClass('hide');
         }
     });
-
-
+    $(".chat-mess").everyTime(2000, 'refresh', function() {
+        get_message_chat();
+    });
 });
 
-function myAJAX(){
-    //AJAX запрос
+function sandMessage(){
     $.post(
         "handler",
         {
             "message": $('#input_message').val(),
         },
         function(data){
-            console.log(data);
             $('#input_message').val('');
         }
     );
 }
+
 function get_message_chat() {
     $.post(
-        "all",
+        "all_message",
         {},
         function(data){
             var data_r = JSON.parse(data),
                 out='';
             for( var i = 0; i < data_r.length; i++ ) {
                 for(var key in data_r[i]){
-                    console.log(key);
                     out += '<div class="row">\n' +
                                 '<div class="card message-card m-1">' +
                                     '<div class="card-body p-2">' +
@@ -52,6 +51,4 @@ function get_message_chat() {
     );
     // $("html,body").animate({"scrollTop":3000},3000);
 }
-$(".chat-mess").everyTime(2000, 'refresh', function() {
-    get_message_chat();
-});
+

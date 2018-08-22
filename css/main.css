@@ -114,6 +114,22 @@ body {
 .hide {
     display: none;
 }
+body {
+    background: #6e7582;
+}
+.chat-container {
+    margin-top: 120px;
+    width: 70%;
+}
 div.col div.card {
-    width: 80%;
+    width: 100%;
+}
+.sidebar-scroll {
+    background: #fff;
+}
+ul.list-group li.list-group-item {
+    border: 1px solid #f1f1f1;
+}
+li.list-group-item a {
+    color: white;
 }

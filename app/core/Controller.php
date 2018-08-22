@@ -17,5 +17,10 @@ class Controller {
 	    $html = ob_get_clean();
 	    return $html;
     }
-
+    public function render_handlers($content)
+    {
+        ob_start();
+        $this->view->handler($content);
+        return ob_get_clean();
+    }
 }

@@ -34,8 +34,9 @@ class UserController extends Controller
 
     public function showUsers(ServerRequestInterface $request, array $args)
     {
-        $data = User::all()->toArray();
+        var_dump($args);
+//        $data = User::all()->toArray();
 //        var_dump($all_users);
-        $this->view->generate('test.php', 'template_view.php', $data);
+//        $this->view->generate('test.php', 'template_view.php', $data);
     }
 }

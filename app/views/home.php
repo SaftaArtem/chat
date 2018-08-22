@@ -3,6 +3,11 @@ session_start();
 if( !isset($_SESSION['id'])): ?>
     <?php echo  header("location:intropage");?>
 <?php else:?>
+    <div class="links">
+        <a href="register">Регистрация</a>
+        <hr>
+        <a href="login">Войти</a>
+    </div>
     <div class="container-fluid chat-container">
         <div class="row h-100">
             <div class="col-3 border-chat-lightgray px-0" id="sidebar">
@@ -17,10 +22,10 @@ if( !isset($_SESSION['id'])): ?>
                     </div>
                     <div class="sidebar-scroll" id="list-group">
                         <ul class="list-group w-100" id="friend-list">
-                            <?php foreach ($data as $name):?>
+                            <?php foreach ($data as $user):?>
                                 <li class="list-group-item p-1 active hover-bg-lightgray">
                                     <img src="//placehold.it/50x50" class="rounded-circle">
-                                    <span class="d-xs-none username"><?= $name ?></span>
+                                    <a href="user/<?= $user['name'].'/'.$user['id']?>"><span class="d-xs-none username"><?= $user["name"] ?></span></a>
                                 </li>
                             <?php endforeach;?>
                         </ul>
